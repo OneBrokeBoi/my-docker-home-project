@@ -1,1 +1,53 @@
+#version: '3.5'
+#services:
+ # audiobookshelf:
+  #  container_name: audiobookshelf
+   # image: ghcr.io/advplyr/audiobookshelf:latest
+   # environment:
+    #  - AUDIOBOOKSHELF_UID=99
+     # - AUDIOBOOKSHELF_GID=100
+   # ports:
+    #  - 13378:80
+   # volumes:
+    #  - /home/onebrokeboi/audiobookshelf/audiobooks:/audiobooks
+     # - /home/onebrokeboi/audiobookshelf/podcasts:/podcasts
+     # - /home/onebrokeboi/audiobookshelf/config:/config
+     # - /home/onebrokeboi/audiobookshelf/metadata:/metadata
 
+
+version: '3.5'
+services:
+  audiobookshelf:
+    container_name: audiobookshelf
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    environment:
+      - AUDIOBOOKSHELF_UID=99
+      - AUDIOBOOKSHELF_GID=100
+    ports:
+      - 13378:80
+    volumes:
+      - /home/onebrokeboi/audiobookshelf/audiobooks:/audiobooks
+      - /home/onebrokeboi/audiobookshelf/podcasts:/podcasts
+      - /home/onebrokeboi/audiobookshelf/config:/config
+      - /home/onebrokeboi/audiobookshelf/metadata:/metadata
+    app:
+    image: 'jc21/nginx-proxy-manager:latest'
+#    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+
+
+
+#  apache:
+#    image: httpd:latest
+#    container_name: my-apache-app
+#    ports:
+#    - '8080:80'
+#    volumes:
+#    - ${PWD}/website:/usr/local/apache2/htdocs
